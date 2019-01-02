@@ -29,11 +29,11 @@ public class XSSFExcelHandle {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
-     * Write custom data into excel sheet
+     * Write data into excel sheet
      *
-     * @param filePath  excel file path
-     * @param sheetName sheet name
-     * @param data      row data
+     * @param filePath  Excel file path
+     * @param sheetName Sheet name
+     * @param data      Row list
      */
     public void writeDataToSheet(String filePath, String sheetName, List<Row> data) {
         // keep 1000 rows in memory, exceeding rows will be flushed to disk
@@ -73,10 +73,10 @@ public class XSSFExcelHandle {
     /**
      * Extract sheet data from excel and write it into a blocking queue
      *
-     * @param filePath         excel file path
-     * @param sheetName        sheet name
-     * @param buffer           a blocking queue
-     * @param timeoutInSeconds waiting time when the queue is blocked, throw exception when the time is reached
+     * @param filePath         Excel file path
+     * @param sheetName        Sheet name
+     * @param buffer           The blocking queue used to store sheet data
+     * @param timeoutInSeconds waiting time when the queue is full, throw exception when the time is reached
      */
     public void readSheetDataToBlockingQueue(String filePath, String sheetName, BlockingQueue<Row> buffer, int timeoutInSeconds) {
         SheetContentExtrator sheetContentExtrator = new SheetContentExtrator(buffer, timeoutInSeconds);
@@ -84,11 +84,11 @@ public class XSSFExcelHandle {
     }
 
     /**
-     * Extract sheet data from excel and write it into a buffer
+     * Extract sheet data from excel and write it into a list buffer
      *
-     * @param filePath  excel file path
-     * @param sheetName sheet name
-     * @param buffer    buffer
+     * @param filePath  Excel file path
+     * @param sheetName Sheet name
+     * @param buffer    List buffer
      */
     public void readSheetData(String filePath, String sheetName, final List<Row> buffer) {
         SheetContentExtrator sheetContentExtrator = new SheetContentExtrator(buffer);
@@ -98,9 +98,9 @@ public class XSSFExcelHandle {
     /**
      * Extract sheet data
      *
-     * @param filePath             excel file path
-     * @param sheetName            sheet name
-     * @param sheetContentExtrator data extractor
+     * @param filePath             Excel file path
+     * @param sheetName            Sheet name
+     * @param sheetContentExtrator Data extractor
      */
     public void extractData(String filePath, String sheetName, SheetContentExtrator sheetContentExtrator) {
         InputStream sheet = null;
