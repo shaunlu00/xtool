@@ -21,7 +21,6 @@ import org.xml.sax.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
@@ -32,9 +31,9 @@ public class XSSFExcelHandle {
     /**
      * Write custom data into excel sheet
      *
-     * @param filePath excel file path
+     * @param filePath  excel file path
      * @param sheetName sheet name
-     * @param data row data
+     * @param data      row data
      */
     public void writeDataToSheet(String filePath, String sheetName, List<Row> data) {
         // keep 1000 rows in memory, exceeding rows will be flushed to disk
@@ -42,10 +41,10 @@ public class XSSFExcelHandle {
         // temp files will be gzipped
         wb.setCompressTempFiles(true);
         Sheet sheet = wb.createSheet(sheetName);
-        for (int rowNum=0; rowNum<data.size(); rowNum ++) {
+        for (int rowNum = 0; rowNum < data.size(); rowNum++) {
             org.apache.poi.ss.usermodel.Row row = sheet.createRow(rowNum);
             List<Cell> cells = data.get(rowNum).getCells();
-            for(int cellnum = 0; cellnum < cells.size(); cellnum++){
+            for (int cellnum = 0; cellnum < cells.size(); cellnum++) {
                 org.apache.poi.ss.usermodel.Cell cell = row.createCell(cellnum);
                 cell.setCellValue(cells.get(cellnum).getContent());
             }
@@ -74,12 +73,12 @@ public class XSSFExcelHandle {
     /**
      * Extract sheet data from excel and write it into a blocking queue
      *
-     * @param filePath excel file path
-     * @param sheetName sheet name
-     * @param buffer a blocking queue
+     * @param filePath         excel file path
+     * @param sheetName        sheet name
+     * @param buffer           a blocking queue
      * @param timeoutInSeconds waiting time when the queue is blocked, throw exception when the time is reached
      */
-    public void readSheetDataToBlockingQueue(String filePath, String sheetName, BlockingQueue<Row> buffer, int timeoutInSeconds){
+    public void readSheetDataToBlockingQueue(String filePath, String sheetName, BlockingQueue<Row> buffer, int timeoutInSeconds) {
         SheetContentExtrator sheetContentExtrator = new SheetContentExtrator(buffer, timeoutInSeconds);
         extractData(filePath, sheetName, sheetContentExtrator);
     }
@@ -87,9 +86,9 @@ public class XSSFExcelHandle {
     /**
      * Extract sheet data from excel and write it into a buffer
      *
-     * @param filePath excel file path
+     * @param filePath  excel file path
      * @param sheetName sheet name
-     * @param buffer buffer
+     * @param buffer    buffer
      */
     public void readSheetData(String filePath, String sheetName, final List<Row> buffer) {
         SheetContentExtrator sheetContentExtrator = new SheetContentExtrator(buffer);
@@ -99,11 +98,11 @@ public class XSSFExcelHandle {
     /**
      * Extract sheet data
      *
-     * @param filePath excel file path
-     * @param sheetName sheet name
+     * @param filePath             excel file path
+     * @param sheetName            sheet name
      * @param sheetContentExtrator data extractor
      */
-    public void extractData(String filePath, String sheetName, SheetContentExtrator sheetContentExtrator){
+    public void extractData(String filePath, String sheetName, SheetContentExtrator sheetContentExtrator) {
         InputStream sheet = null;
         OPCPackage pkg = null;
         try {
