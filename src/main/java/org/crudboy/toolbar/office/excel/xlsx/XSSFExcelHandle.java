@@ -9,7 +9,6 @@ import org.apache.poi.xssf.eventusermodel.ReadOnlySharedStringsTable;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler;
 import org.apache.poi.xssf.model.StylesTable;
-import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.crudboy.toolbar.office.excel.Cell;
 import org.crudboy.toolbar.office.excel.Row;
@@ -24,12 +23,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 public class XSSFExcelHandle {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public void writeSheetData(String filePath, String sheetName, List<Row> data) {
+    /**
+     * Write custom data into excel sheet
+     *
+     * @param filePath excel file path
+     * @param sheetName sheet name
+     * @param data row data
+     */
+    public void writeDataToSheet(String filePath, String sheetName, List<Row> data) {
         // keep 1000 rows in memory, exceeding rows will be flushed to disk
         SXSSFWorkbook wb = new SXSSFWorkbook(1000);
         // temp files will be gzipped
@@ -62,12 +69,41 @@ public class XSSFExcelHandle {
             // dispose of temporary files backing this workbook on disk
             wb.dispose();
         }
-
-
     }
 
-    public List<Row> readSheetData(String filePath, String sheetName) {
-        List<Row> ret = new ArrayList<>();
+    /**
+     * Extract sheet data from excel and write it into a blocking queue
+     *
+     * @param filePath excel file path
+     * @param sheetName sheet name
+     * @param buffer a blocking queue
+     * @param timeoutInSeconds waiting time when the queue is blocked, throw exception when the time is reached
+     */
+    public void readSheetDataToBlockingQueue(String filePath, String sheetName, BlockingQueue<Row> buffer, int timeoutInSeconds){
+        SheetContentExtrator sheetContentExtrator = new SheetContentExtrator(buffer, timeoutInSeconds);
+        extractData(filePath, sheetName, sheetContentExtrator);
+    }
+
+    /**
+     * Extract sheet data from excel and write it into a buffer
+     *
+     * @param filePath excel file path
+     * @param sheetName sheet name
+     * @param buffer buffer
+     */
+    public void readSheetData(String filePath, String sheetName, final List<Row> buffer) {
+        SheetContentExtrator sheetContentExtrator = new SheetContentExtrator(buffer);
+        extractData(filePath, sheetName, sheetContentExtrator);
+    }
+
+    /**
+     * Extract sheet data
+     *
+     * @param filePath excel file path
+     * @param sheetName sheet name
+     * @param sheetContentExtrator data extractor
+     */
+    public void extractData(String filePath, String sheetName, SheetContentExtrator sheetContentExtrator){
         InputStream sheet = null;
         OPCPackage pkg = null;
         try {
@@ -80,7 +116,7 @@ public class XSSFExcelHandle {
             DataFormatter formatter = new DataFormatter();
             XMLReader sheetParser = SAXHelper.newXMLReader();
             ContentHandler handler = new XSSFSheetXMLHandler(
-                    styles, null, strings, new SheetContentExtrator(ret), formatter, false);
+                    styles, null, strings, sheetContentExtrator, formatter, false);
             sheetParser.setContentHandler(handler);
             sheetParser.parse(sheetSource);
         } catch (Exception e) {
@@ -102,7 +138,6 @@ public class XSSFExcelHandle {
                 }
             }
         }
-
-        return ret;
     }
+
 }

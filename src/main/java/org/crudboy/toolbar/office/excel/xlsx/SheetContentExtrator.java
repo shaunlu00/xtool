@@ -5,10 +5,14 @@ import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler;
 import org.apache.poi.xssf.usermodel.XSSFComment;
 import org.crudboy.toolbar.office.excel.Row;
+import org.crudboy.toolbar.office.excel.error.ErrorConstants;
+import org.crudboy.toolbar.office.excel.error.ExcelHandleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class SheetContentExtrator implements XSSFSheetXMLHandler.SheetContentsHandler {
 
@@ -20,8 +24,18 @@ public class SheetContentExtrator implements XSSFSheetXMLHandler.SheetContentsHa
 
     private List<Row> retBuffer;
 
+    private boolean isBlockingWay;
+    private BlockingQueue<Row> blockingRetBuffer;
+    private int timeoutInSeconds;
+
     public SheetContentExtrator(List<Row> retBuffer) {
         this.retBuffer = retBuffer;
+    }
+
+    public SheetContentExtrator(BlockingQueue<Row> blockingRetBuffer, int timeoutInSeconds) {
+        this.isBlockingWay = true;
+        this.blockingRetBuffer = blockingRetBuffer;
+        this.timeoutInSeconds = timeoutInSeconds;
     }
 
     private void outputMissingRows(int rowNum) {
@@ -38,7 +52,16 @@ public class SheetContentExtrator implements XSSFSheetXMLHandler.SheetContentsHa
         currentRowNum = rowNum;
         currentColNum = -1;
         currentRow = new Row(rowNum);
-        retBuffer.add(currentRow);
+        if (isBlockingWay){
+            try {
+                blockingRetBuffer.offer(currentRow, timeoutInSeconds, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                logger.error("put result to blockingqueue error", e);
+                throw new ExcelHandleException(ErrorConstants.EXCEL_READ_ERROR, e);
+            }
+        } else {
+            retBuffer.add(currentRow);
+        }
     }
 
     @Override
