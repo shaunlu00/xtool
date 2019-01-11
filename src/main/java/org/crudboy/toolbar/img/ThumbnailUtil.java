@@ -19,10 +19,10 @@ public class ThumbnailUtil {
     /**
      * Create thumbnail with given width and height
      *
-     * @param originFilePath    Original file path
-     * @param destFilePath      Thumbnail file path
-     * @param width             Thumbnail width
-     * @param height            Thumbnail height
+     * @param originFilePath Original file path
+     * @param destFilePath   Thumbnail file path
+     * @param width          Thumbnail width
+     * @param height         Thumbnail height
      * @throws IOException
      */
     public static void createThumbnail(String originFilePath, String destFilePath, int width, int height) throws IOException {
@@ -32,9 +32,9 @@ public class ThumbnailUtil {
     /**
      * Create thumbnail with given scale
      *
-     * @param originFilePath    Original file path
-     * @param destFilePath      Thumbnail file path
-     * @param scale             Image scaled level, for example: 0.1
+     * @param originFilePath Original file path
+     * @param destFilePath   Thumbnail file path
+     * @param scale          Image scaled level, for example: 0.1
      * @throws IOException
      */
     public static void createThumbnail(String originFilePath, String destFilePath, double scale) throws IOException {
@@ -44,11 +44,11 @@ public class ThumbnailUtil {
     /**
      * Create thumbnail and return it as byte array
      *
-     * @param originFilePath    Original file path
-     * @param format            Thumbnail image format
-     * @param width             Thumbnail width
-     * @param height            Thumbnail height
-     * @return                  The byte array that holds thumbnail data
+     * @param originFilePath Original file path
+     * @param format         Thumbnail image format
+     * @param width          Thumbnail width
+     * @param height         Thumbnail height
+     * @return The byte array that holds thumbnail data
      */
     public static byte[] getThumbnailAsBytes(String originFilePath, String format, int width, int height) {
         BufferedImage thumbnail = null;

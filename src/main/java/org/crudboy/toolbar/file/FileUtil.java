@@ -18,8 +18,8 @@ public class FileUtil {
     /**
      * Write byte array into a file
      *
-     * @param bytes     Byte array
-     * @param filePath  The output file path
+     * @param bytes    Byte array
+     * @param filePath The output file path
      * @return
      * @throws IOException
      */
@@ -31,8 +31,8 @@ public class FileUtil {
     /**
      * Write byte array into a file
      *
-     * @param bytes     Byte array
-     * @param file      The output file
+     * @param bytes Byte array
+     * @param file  The output file
      * @return
      * @throws IOException
      * @throws IllegalArgumentException If the file exists
@@ -47,8 +47,8 @@ public class FileUtil {
     /**
      * Read a file and return file data as byte array
      *
-     * @param filePath  The source file path
-     * @return          The byte array that contains all file data
+     * @param filePath The source file path
+     * @return The byte array that contains all file data
      * @throws IOException
      */
     public static byte[] getFileAsBytes(String filePath) throws IOException {
@@ -60,8 +60,8 @@ public class FileUtil {
     /**
      * Read from input stream and write data into a file
      *
-     * @param inputStream   Input stream
-     * @param filePath      Destination file path
+     * @param inputStream Input stream
+     * @param filePath    Destination file path
      * @return
      * @throws IOException
      */
@@ -73,8 +73,8 @@ public class FileUtil {
     /**
      * Read from input stream and write data into a file
      *
-     * @param inputStream   Input stream
-     * @param file          Destination file
+     * @param inputStream Input stream
+     * @param file        Destination file
      * @return
      * @throws IOException
      */
@@ -88,8 +88,8 @@ public class FileUtil {
     /**
      * Get file instance from file path
      *
-     * @param filePath  The file path
-     * @return          File instance
+     * @param filePath The file path
+     * @return File instance
      * @throws IllegalArgumentException If the file does not exist
      */
     public static File getFile(String filePath) {
@@ -101,8 +101,8 @@ public class FileUtil {
     /**
      * Copy file
      *
-     * @param from  Source file instance
-     * @param to    Destination file instance
+     * @param from Source file instance
+     * @param to   Destination file instance
      * @throws IOException
      */
     public static void copyFile(File from, File to) throws IOException {

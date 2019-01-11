@@ -13,8 +13,8 @@ public class DirectoryUtil {
     /**
      * Create directory if it does not exist
      *
-     * @param dirPath   The directory path
-     * @return          The file object that represents created directory
+     * @param dirPath The directory path
+     * @return The file object that represents created directory
      * @throws IllegalArgumentException If directory already exists
      */
     public static File createDirectory(String dirPath) {
@@ -32,7 +32,7 @@ public class DirectoryUtil {
      *
      * @param parentDirPath The parent directory path
      * @param dirName       The child directory name
-     * @return              The file object that represents created directory
+     * @return The file object that represents created directory
      * @throws IllegalArgumentException If the parent directory does not exist, or child directory exists
      */
     public static File createChildDirectory(String parentDirPath, String dirName) {
@@ -46,7 +46,7 @@ public class DirectoryUtil {
      *
      * @param parentDir The parent directory file object
      * @param dirName   The child directory name
-     * @return          The file object that represents created directory
+     * @return The file object that represents created directory
      * @throws IllegalArgumentException If the parent directory does not exist, or child directory exists
      */
     public static File createChildDirectory(File parentDir, String dirName) {
@@ -59,8 +59,8 @@ public class DirectoryUtil {
     /**
      * Get the directory from its path
      *
-     * @param dirPath   The directory path
-     * @return          The file object that represents found directory
+     * @param dirPath The directory path
+     * @return The file object that represents found directory
      * @throws IllegalArgumentException If the directory does not exist
      */
     public static File getDirectory(String dirPath) {
@@ -72,8 +72,8 @@ public class DirectoryUtil {
     /**
      * Determine if the path is a directory
      *
-     * @param dirPath   The directory path
-     * @return          True if the directory exists, otherwise false
+     * @param dirPath The directory path
+     * @return True if the directory exists, otherwise false
      */
     public static boolean exist(String dirPath) {
         File dir = new File(dirPath);
@@ -87,7 +87,7 @@ public class DirectoryUtil {
      */
     public static void deleteDirectory(String dirPath) {
         File dir = getDirectory(dirPath);
-        for (File file : dir.listFiles()){
+        for (File file : dir.listFiles()) {
             if (file.isDirectory()) {
                 deleteDirectory(file.getAbsolutePath());
             } else {

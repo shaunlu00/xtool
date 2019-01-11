@@ -17,14 +17,14 @@ public class TimeProvider {
         this.timezone = TimeZone.getTimeZone(timezoneStr);
     }
 
-    public Calendar getCalendar(){
+    public Calendar getCalendar() {
         return Calendar.getInstance(timezone);
     }
 
     /**
      * Parse date string with ISO format and return Date instance
      *
-     * @param str   The time string with ISO format
+     * @param str The time string with ISO format
      * @return
      * @throws ParseException
      */
@@ -37,8 +37,8 @@ public class TimeProvider {
     /**
      * Parse date object and return date string
      *
-     * @param date          Date instance
-     * @param dateFormat    SimpleDateFormat
+     * @param date       Date instance
+     * @param dateFormat SimpleDateFormat
      * @return
      */
     public String getDateStr(Date date, SimpleDateFormat dateFormat) {
@@ -48,7 +48,7 @@ public class TimeProvider {
     /**
      * Parse date object and return date string with ISO format
      *
-     * @param date          Date instance
+     * @param date Date instance
      * @return
      */
     public String getDateStr(Date date) {
@@ -60,8 +60,8 @@ public class TimeProvider {
     /**
      * Generate a random date in a range
      *
-     * @param beginDate     Begin date
-     * @param endDate       End date
+     * @param beginDate Begin date
+     * @param endDate   End date
      * @return
      */
     public Date randomDate(Date beginDate, Date endDate) {
@@ -85,9 +85,9 @@ public class TimeProvider {
     /**
      * Add/Minus n hours on a date and return the result
      *
-     * @param beginDate     The given date
-     * @param hours         The hours that will be added/subtracted on given date
-     * @return              Result date
+     * @param beginDate The given date
+     * @param hours     The hours that will be added/subtracted on given date
+     * @return Result date
      */
     public Date nextHours(Date beginDate, int hours) {
         Calendar calendar = getCalendar();
@@ -99,9 +99,9 @@ public class TimeProvider {
     /**
      * Add/Minus n minutes on a given date
      *
-     * @param beginDate     The given date
-     * @param minutes       The minutes that will be added/subtracted on given date
-     * @return              Result date
+     * @param beginDate The given date
+     * @param minutes   The minutes that will be added/subtracted on given date
+     * @return Result date
      */
     public Date nextMinutes(Date beginDate, int minutes) {
         Calendar calendar = getCalendar();

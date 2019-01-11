@@ -85,14 +85,14 @@ public class ExcelTest {
         private BlockingQueue<Row> queue;
         private XSSFExcelHandle excelHandle;
 
-        public AsyncExcelReader(String filePath, String sheetName, XSSFExcelHandle excelHandle, BlockingQueue<Row> queue){
+        public AsyncExcelReader(String filePath, String sheetName, XSSFExcelHandle excelHandle, BlockingQueue<Row> queue) {
             this.filePath = filePath;
             this.sheetName = sheetName;
             this.queue = queue;
             this.excelHandle = excelHandle;
         }
 
-        public void run(){
+        public void run() {
             excelHandle.readSheetDataToBlockingQueue(filePath, sheetName, queue, 10);
         }
     }
@@ -101,12 +101,12 @@ public class ExcelTest {
 
         private BlockingQueue<Row> queue;
 
-        public AsyncExcelConsumer(BlockingQueue<Row> queue){
+        public AsyncExcelConsumer(BlockingQueue<Row> queue) {
             this.queue = queue;
         }
 
-        public void run(){
-            while(true) {
+        public void run() {
+            while (true) {
                 try {
                     Row row = queue.poll(3, TimeUnit.SECONDS);
                     if (null == row) {

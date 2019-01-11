@@ -52,7 +52,7 @@ public class SheetContentExtrator implements XSSFSheetXMLHandler.SheetContentsHa
         currentRowNum = rowNum;
         currentColNum = -1;
         currentRow = new Row(rowNum);
-        if (isBlockingWay){
+        if (isBlockingWay) {
             try {
                 blockingRetBuffer.offer(currentRow, timeoutInSeconds, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
@@ -73,7 +73,7 @@ public class SheetContentExtrator implements XSSFSheetXMLHandler.SheetContentsHa
     public void cell(String cellReference, String formattedValue, XSSFComment comment) {
         // gracefully handle missing CellRef here in a similar way as XSSFCell does
         if (cellReference == null) {
-            cellReference = new CellAddress(currentRowNum, currentColNum+1).formatAsString();
+            cellReference = new CellAddress(currentRowNum, currentColNum + 1).formatAsString();
         }
 
         // Did we miss any cells?
