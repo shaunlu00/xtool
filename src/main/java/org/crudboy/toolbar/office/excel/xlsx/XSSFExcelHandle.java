@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
 public class XSSFExcelHandle {
@@ -49,6 +50,50 @@ public class XSSFExcelHandle {
             for (int cellnum = 0; cellnum < cells.size(); cellnum++) {
                 org.apache.poi.ss.usermodel.Cell cell = row.createCell(cellnum);
                 cell.setCellValue(cells.get(cellnum).getContent());
+            }
+        }
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(filePath);
+            wb.write(out);
+        } catch (Exception e) {
+            logger.error("write excel error", e);
+            throw new ExcelHandleException(ErrorConstants.EXCEL_WRITE_ERROR, e);
+        } finally {
+            if (null != out) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    logger.error("close excel error");
+                    throw new ExcelHandleException(ErrorConstants.EXCEL_CLOSE_ERROR, e);
+                }
+            }
+            // dispose of temporary files backing this workbook on disk
+            wb.dispose();
+        }
+    }
+
+    /**
+     * Write data to multiple sheets
+     *
+     * @param filePath  Excel file path
+     * @param sheetMap  A sheet - data map
+     */
+    public void writeDataToMultipleSheet(String filePath, Map<String, List<Row>> sheetMap) {
+        // keep 1000 rows in memory, exceeding rows will be flushed to disk
+        SXSSFWorkbook wb = new SXSSFWorkbook(1000);
+        // temp files will be gzipped
+        wb.setCompressTempFiles(true);
+        for(Map.Entry<String, List<Row>> item : sheetMap.entrySet()) {
+            Sheet sheet = wb.createSheet(item.getKey());
+            List<Row> sheetData = item.getValue();
+            for (int rowNum = 0; rowNum < sheetData.size(); rowNum++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.createRow(rowNum);
+                List<Cell> cells = sheetData.get(rowNum).getCells();
+                for (int cellnum = 0; cellnum < cells.size(); cellnum++) {
+                    org.apache.poi.ss.usermodel.Cell cell = row.createCell(cellnum);
+                    cell.setCellValue(cells.get(cellnum).getContent());
+                }
             }
         }
         FileOutputStream out = null;

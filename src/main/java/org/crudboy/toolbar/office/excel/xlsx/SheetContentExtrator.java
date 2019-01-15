@@ -70,6 +70,7 @@ public class SheetContentExtrator implements XSSFSheetXMLHandler.SheetContentsHa
     }
 
     @Override
+
     public void cell(String cellReference, String formattedValue, XSSFComment comment) {
         // gracefully handle missing CellRef here in a similar way as XSSFCell does
         if (cellReference == null) {
