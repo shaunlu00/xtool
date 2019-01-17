@@ -46,7 +46,7 @@ public class JDBCDriverMap {
         String url = null;
         switch (dbType) {
             case DB_ORACLE:
-                url = "jdbc:oracle:thin:@" + ip + ":" + port + ":" + databaseName;
+                url = "jdbc:oracle:thin:@//" + ip + ":" + port + "/" + databaseName;
                 break;
             case DB_MYSQL:
                 url = "jdbc:mysql://" + ip + ":" + port + "/" + databaseName;
