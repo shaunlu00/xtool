@@ -6,7 +6,7 @@ import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler;
 import org.apache.poi.xssf.usermodel.XSSFComment;
 import org.crudboy.toolbar.office.excel.Row;
 import org.crudboy.toolbar.toolbarerror.ErrorConstants;
-import org.crudboy.toolbar.toolbarerror.ExcelHandleException;
+import org.crudboy.toolbar.toolbarerror.CRUDToolbarException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +57,7 @@ public class SheetContentExtrator implements XSSFSheetXMLHandler.SheetContentsHa
                 blockingRetBuffer.offer(currentRow, timeoutInSeconds, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
                 logger.error("put result to blockingqueue error", e);
-                throw new ExcelHandleException(ErrorConstants.EXCEL_READ_ERROR, e);
+                throw new CRUDToolbarException(ErrorConstants.EXCEL_READ_ERROR, e);
             }
         } else {
             retBuffer.add(currentRow);

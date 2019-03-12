@@ -13,7 +13,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.crudboy.toolbar.office.excel.Cell;
 import org.crudboy.toolbar.office.excel.Row;
 import org.crudboy.toolbar.toolbarerror.ErrorConstants;
-import org.crudboy.toolbar.toolbarerror.ExcelHandleException;
+import org.crudboy.toolbar.toolbarerror.CRUDToolbarException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.ContentHandler;
@@ -58,14 +58,14 @@ public class XSSFExcelHandle {
             wb.write(out);
         } catch (Exception e) {
             logger.error("write excel error", e);
-            throw new ExcelHandleException(ErrorConstants.EXCEL_WRITE_ERROR, e);
+            throw new CRUDToolbarException(ErrorConstants.EXCEL_WRITE_ERROR, e);
         } finally {
             if (null != out) {
                 try {
                     out.close();
                 } catch (IOException e) {
                     logger.error("close excel error");
-                    throw new ExcelHandleException(ErrorConstants.EXCEL_CLOSE_ERROR, e);
+                    throw new CRUDToolbarException(ErrorConstants.EXCEL_CLOSE_ERROR, e);
                 }
             }
             // dispose of temporary files backing this workbook on disk
@@ -102,14 +102,14 @@ public class XSSFExcelHandle {
             wb.write(out);
         } catch (Exception e) {
             logger.error("write excel error", e);
-            throw new ExcelHandleException(ErrorConstants.EXCEL_WRITE_ERROR, e);
+            throw new CRUDToolbarException(ErrorConstants.EXCEL_WRITE_ERROR, e);
         } finally {
             if (null != out) {
                 try {
                     out.close();
                 } catch (IOException e) {
                     logger.error("close excel error");
-                    throw new ExcelHandleException(ErrorConstants.EXCEL_CLOSE_ERROR, e);
+                    throw new CRUDToolbarException(ErrorConstants.EXCEL_CLOSE_ERROR, e);
                 }
             }
             // dispose of temporary files backing this workbook on disk
@@ -167,7 +167,7 @@ public class XSSFExcelHandle {
             sheetParser.parse(sheetSource);
         } catch (Exception e) {
             logger.error("read sheet data error", e);
-            throw new ExcelHandleException(ErrorConstants.EXCEL_READ_ERROR, e);
+            throw new CRUDToolbarException(ErrorConstants.EXCEL_READ_ERROR, e);
         } finally {
             if (null != sheet) {
                 try {
