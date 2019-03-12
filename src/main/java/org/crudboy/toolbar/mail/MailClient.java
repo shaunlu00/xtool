@@ -42,13 +42,13 @@ public class MailClient  {
     }
 
     public void sendMail(MailMessage mailMessage) throws UnsupportedEncodingException, MessagingException {
-        Message msg = createMessage(mailMessage);
+        MimeMessage msg = createMessage(mailMessage);
         Transport.send(msg);
     }
 
-    private Message createMessage(MailMessage mailMessage) throws MessagingException, UnsupportedEncodingException {
+    private MimeMessage createMessage(MailMessage mailMessage) throws MessagingException, UnsupportedEncodingException {
         // 1. create message instance
-        Message msg = new MimeMessage(session);
+        MimeMessage msg = new MimeMessage(session);
         // 2. set sender address
         msg.setFrom(new InternetAddress(mailMessage.getFrom()));
         // 3. set receivers (to, cc, bcc)
@@ -70,17 +70,17 @@ public class MailClient  {
             }
         }
         // 4. set mail subject
-        msg.setSubject(mailMessage.getSubject());
+        msg.setSubject(mailMessage.getSubject(), "utf-8");
 
         // 5. add text-img bodypart
         // 5.1 create text-img multipart
         MimeMultipart mm_text_image = new MimeMultipart("related");
         // 5.2 add text node
         MimeBodyPart text = new MimeBodyPart();
-        text.setContent(mailMessage.getText(), "text/html;charset=UTF-8");
+        text.setContent(mailMessage.getText(), "text/html;charset=utf-8");
         mm_text_image.addBodyPart(text);
         // 5.3 add inline img node
-        if (!mailMessage.getInlineImgs().keySet().isEmpty()) {
+        if (null != mailMessage.getInlineImgs() && 0 != mailMessage.getInlineImgs().size() && !mailMessage.getInlineImgs().keySet().isEmpty()) {
             for (Map.Entry<String, File> item : mailMessage.getInlineImgs().entrySet()) {
                 // 创建图片
                 MimeBodyPart img = new MimeBodyPart();
