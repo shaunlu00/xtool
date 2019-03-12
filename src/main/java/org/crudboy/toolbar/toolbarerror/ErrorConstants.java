@@ -1,4 +1,4 @@
-package org.crudboy.toolbar.office.excel.error;
+package org.crudboy.toolbar.toolbarerror;
 
 public class ErrorConstants {
 
