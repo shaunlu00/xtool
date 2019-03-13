@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-public class MailClient  {
+public class MailClient {
 
     private String host;
 
