@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
@@ -30,8 +31,15 @@ public class ClasspathUtil {
                 new ClassLoader[]{myThreadContextClassLoader, myStaticClassLoader};
     }
 
+    /**
+     * Get all resource URLs (no resource name in the path)
+     *
+     * @param resourceName The full resource name, e.g. org/crudboy/toolbar/classhack/ClasspathUtil.class
+     * @param classLoaders
+     * @return
+     */
     public static List<URL> getResourceURLs(String resourceName, ClassLoader[] classLoaders) {
-        final List<URL> resourceURLs = new ArrayList<URL>();
+        final List<URL> resourceURLs = new ArrayList<>();
         if (null == classLoaders || 0 == classLoaders.length) {
             classLoaders = getDefaultClassLoaders();
         }
@@ -55,13 +63,62 @@ public class ClasspathUtil {
         return distinctUrls(resourceURLs);
     }
 
-    public static String getResourceAbsolutePath(String resourceName) {
-        String ret = null;
+    /**
+     * Get one resource URL (no resource name in the path)
+     *
+     * @param resourceName
+     * @return
+     */
+    public static URL getResourceURL(String resourceName) {
         List<URL> urls = getResourceURLs(resourceName, null);
         if (null != urls && 0 != urls.size()) {
-            ret = urls.get(0).getPath() + resourceName;
+            return urls.get(0);
+        } else return null;
+    }
+
+    /**
+     * Get resource absolute path
+     * For example: file:/.../file.txt
+     * file:/.../example.jar!/file.txt
+     *
+     * @param resourceName
+     * @return
+     */
+    public static String getResourceAbsolutePath(String resourceName) throws MalformedURLException {
+        String ret = null;
+        URL url = getResourceURL(resourceName);
+        if (null != url) {
+            if (url.getPath().endsWith("/")) {
+                ret = url.getPath() + resourceName;
+            } else {
+                ret = url.getPath() + "/" + resourceName;
+            }
         }
         return ret;
+    }
+
+    /**
+     * Get resource as inputstream
+     *
+     * @param resourceName
+     * @return
+     * @throws IOException
+     */
+    public static InputStream getResourceAsStream(String resourceName) throws IOException {
+        URL url = getResourceURL(resourceName);
+        URL resourceURL = null;
+        if (null != url) {
+            if (url.toExternalForm().endsWith("/")) {
+                resourceURL = new URL(url.toExternalForm() + resourceName);
+            } else {
+                resourceURL = new URL(url.toExternalForm() + "/" + resourceName);
+            }
+        }
+        if (null != resourceURL) {
+            return resourceURL.openConnection().getInputStream();
+        } else {
+            return null;
+        }
     }
 
     public static List<URL> getPackageURLs(String packageName, ClassLoader[] classLoaders) {
