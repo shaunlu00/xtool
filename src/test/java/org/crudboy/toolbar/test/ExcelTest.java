@@ -19,7 +19,7 @@ public class ExcelTest {
     private XSSFExcelHandle xssfExcelHandle = new XSSFExcelHandle();
 
     @Test
-    public void testReadALL() {
+    public void testReadALL() throws IOException {
         long start = System.currentTimeMillis();
         String originFilePath = ClasspathUtil.getResourceAbsolutePath("test-data/office/BlackFriday.xlsx");
         List<Row> buffer = new ArrayList<>();
@@ -46,7 +46,7 @@ public class ExcelTest {
     }
 
     @Test
-    public void testAsyncTask() throws InterruptedException {
+    public void testAsyncTask() throws IOException, InterruptedException {
         long start = System.currentTimeMillis();
         String originFilePath = ClasspathUtil.getResourceAbsolutePath("test-data/office/BlackFriday.xlsx");
         BlockingQueue<Row> buffer = new ArrayBlockingQueue<Row>(1000);

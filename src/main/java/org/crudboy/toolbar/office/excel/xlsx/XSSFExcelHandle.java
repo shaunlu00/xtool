@@ -12,8 +12,8 @@ import org.apache.poi.xssf.model.StylesTable;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.crudboy.toolbar.office.excel.Cell;
 import org.crudboy.toolbar.office.excel.Row;
-import org.crudboy.toolbar.toolbarerror.ErrorConstants;
 import org.crudboy.toolbar.toolbarerror.CRUDToolbarException;
+import org.crudboy.toolbar.toolbarerror.ErrorConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.ContentHandler;
@@ -76,15 +76,15 @@ public class XSSFExcelHandle {
     /**
      * Write data to multiple sheets
      *
-     * @param filePath  Excel file path
-     * @param sheetMap  A sheet - data map
+     * @param filePath Excel file path
+     * @param sheetMap A sheet - data map
      */
     public void writeDataToMultipleSheet(String filePath, Map<String, List<Row>> sheetMap) {
         // keep 1000 rows in memory, exceeding rows will be flushed to disk
         SXSSFWorkbook wb = new SXSSFWorkbook(1000);
         // temp files will be gzipped
         wb.setCompressTempFiles(true);
-        for(Map.Entry<String, List<Row>> item : sheetMap.entrySet()) {
+        for (Map.Entry<String, List<Row>> item : sheetMap.entrySet()) {
             Sheet sheet = wb.createSheet(item.getKey());
             List<Row> sheetData = item.getValue();
             for (int rowNum = 0; rowNum < sheetData.size(); rowNum++) {
@@ -127,7 +127,12 @@ public class XSSFExcelHandle {
      */
     public void readSheetDataToBlockingQueue(String filePath, String sheetName, BlockingQueue<Row> buffer, int timeoutInSeconds) {
         SheetContentExtrator sheetContentExtrator = new SheetContentExtrator(buffer, timeoutInSeconds);
-        extractData(filePath, sheetName, sheetContentExtrator);
+        extractData(openExcelReadOnly(filePath), sheetName, sheetContentExtrator);
+    }
+
+    public void readSheetDataToBlockingQueue(InputStream inputStream, String sheetName, BlockingQueue<Row> buffer, int timeoutInSeconds) {
+        SheetContentExtrator sheetContentExtrator = new SheetContentExtrator(buffer, timeoutInSeconds);
+        extractData(openExcelReadOnly(inputStream), sheetName, sheetContentExtrator);
     }
 
     /**
@@ -139,21 +144,48 @@ public class XSSFExcelHandle {
      */
     public void readSheetData(String filePath, String sheetName, final List<Row> buffer) {
         SheetContentExtrator sheetContentExtrator = new SheetContentExtrator(buffer);
-        extractData(filePath, sheetName, sheetContentExtrator);
+        extractData(openExcelReadOnly(filePath), sheetName, sheetContentExtrator);
+    }
+
+    public void readSheetData(InputStream inputStream, String sheetName, final List<Row> buffer) {
+        SheetContentExtrator sheetContentExtrator = new SheetContentExtrator(buffer);
+        extractData(openExcelReadOnly(inputStream), sheetName, sheetContentExtrator);
+    }
+
+    private OPCPackage openExcelReadOnly(String filePath) {
+        OPCPackage pkg = null;
+        try {
+            pkg = OPCPackage.open(filePath, PackageAccess.READ);
+        } catch (Exception e) {
+            logger.error("open excel error", e);
+            throw new CRUDToolbarException(ErrorConstants.EXCEL_OPEN_ERROR, e);
+        }
+        return pkg;
+    }
+
+    private OPCPackage openExcelReadOnly(InputStream inputStream) {
+        OPCPackage pkg = null;
+        try {
+            pkg = OPCPackage.open(inputStream);
+        } catch (Exception e) {
+            logger.error("open excel error", e);
+            throw new CRUDToolbarException(ErrorConstants.EXCEL_OPEN_ERROR, e);
+        }
+        return pkg;
     }
 
     /**
      * Extract sheet data
      *
-     * @param filePath             Excel file path
+     * @param pkg
      * @param sheetName            Sheet name
      * @param sheetContentExtrator Data extractor
      */
-    public void extractData(String filePath, String sheetName, SheetContentExtrator sheetContentExtrator) {
+    public void extractData(OPCPackage pkg, String sheetName, SheetContentExtrator sheetContentExtrator) {
         InputStream sheet = null;
-        OPCPackage pkg = null;
+//        OPCPackage pkg = null;
         try {
-            pkg = OPCPackage.open(filePath, PackageAccess.READ);
+//            pkg = OPCPackage.open(filePath, PackageAccess.READ);
             XSSFReader xssfReader = new XSSFReader(pkg);
             StylesTable styles = xssfReader.getStylesTable();
             ReadOnlySharedStringsTable strings = new ReadOnlySharedStringsTable(pkg);
