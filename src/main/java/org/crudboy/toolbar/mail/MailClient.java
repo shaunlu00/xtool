@@ -87,6 +87,7 @@ public class MailClient {
                 DataHandler dh = new DataHandler(new FileDataSource(item.getValue()));
                 img.setDataHandler(dh);
                 img.setContentID(item.getKey());
+                img.setDisposition(MimeBodyPart.INLINE);
                 mm_text_image.addBodyPart(img);
             }
         }
