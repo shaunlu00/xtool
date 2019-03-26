@@ -26,7 +26,7 @@ public class ClasspathUtil {
     public static ClassLoader[] getDefaultClassLoaders() {
         ClassLoader myThreadContextClassLoader = myThreadContextClassLoader();
         ClassLoader myStaticClassLoader = myStaticClassLoader();
-        return myThreadContextClassLoader == myThreadContextClassLoader ?
+        return myThreadContextClassLoader == myStaticClassLoader ?
                 new ClassLoader[]{myThreadContextClassLoader} :
                 new ClassLoader[]{myThreadContextClassLoader, myStaticClassLoader};
     }

@@ -123,7 +123,7 @@ public class XSSFExcelHandle {
      * @param filePath         Excel file path
      * @param sheetName        Sheet name
      * @param buffer           The blocking queue used to store sheet data
-     * @param timeoutInSeconds waiting time when the queue is full, throw exception when the time is reached
+     * @param timeoutInSeconds waiting time when the queue is full, throw error when the time is reached
      */
     public void readSheetDataToBlockingQueue(String filePath, String sheetName, BlockingQueue<Row> buffer, int timeoutInSeconds) {
         SheetContentExtrator sheetContentExtrator = new SheetContentExtrator(buffer, timeoutInSeconds);

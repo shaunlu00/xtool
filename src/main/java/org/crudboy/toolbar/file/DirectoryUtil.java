@@ -87,11 +87,13 @@ public class DirectoryUtil {
      */
     public static void deleteDirectory(String dirPath) {
         File dir = getDirectory(dirPath);
-        for (File file : dir.listFiles()) {
-            if (file.isDirectory()) {
-                deleteDirectory(file.getAbsolutePath());
-            } else {
-                file.delete();
+        if (null != dir.listFiles()) {
+            for (File file : dir.listFiles()) {
+                if (file.isDirectory()) {
+                    deleteDirectory(file.getAbsolutePath());
+                } else {
+                    file.delete();
+                }
             }
         }
         dir.delete();
