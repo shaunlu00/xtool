@@ -13,6 +13,8 @@ import java.util.*;
 
 public class ClasspathUtil {
 
+    private ClasspathUtil(){}
+
     private static final Logger logger = LoggerFactory.getLogger(ClasspathUtil.class);
 
     public static ClassLoader myThreadContextClassLoader() {
@@ -71,7 +73,7 @@ public class ClasspathUtil {
      */
     public static URL getResourceURL(String resourceName) {
         List<URL> urls = getResourceURLs(resourceName, null);
-        if (null != urls && 0 != urls.size()) {
+        if (0 != urls.size()) {
             return urls.get(0);
         } else return null;
     }
@@ -130,7 +132,7 @@ public class ClasspathUtil {
         URL url = null;
         String resourceName = clss.getName().replace(".", "/") + ".class";
         List<URL> urls = getResourceURLs(resourceName, classLoaders);
-        if (null != urls && 0 != urls.size()) {
+        if (0 != urls.size()) {
             url = urls.get(0);
         }
         return url;

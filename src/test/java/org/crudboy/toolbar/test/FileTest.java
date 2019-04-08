@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 public class FileTest {
 
@@ -15,12 +16,11 @@ public class FileTest {
     public void test() throws IOException {
         String testClassPath = ClasspathUtil.getClassURL(FileTest.class, null).getPath();
         String testDirPath = testClassPath + "test-data" + File.separator + "file";
-        File testDir = null;
         if (DirectoryUtil.exist(testDirPath)) {
             DirectoryUtil.deleteDirectory(testDirPath);
         }
-        testDir = DirectoryUtil.createDirectory(testDirPath);
+        Path testDir = DirectoryUtil.createDirectory(testDirPath);
         String originFilePath = ClasspathUtil.getResourceAbsolutePath("test-data/img/James.jpeg");
-        FileUtil.copyFile(new File(originFilePath), new File(testDir, "Lebron.jpeg"));
+        FileUtil.copyFile(new File(originFilePath), new File(testDir.toString(), "Lebron.jpeg"));
     }
 }

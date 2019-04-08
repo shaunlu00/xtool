@@ -57,6 +57,7 @@ public class SheetContentExtrator implements XSSFSheetXMLHandler.SheetContentsHa
                 blockingRetBuffer.offer(currentRow, timeoutInSeconds, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
                 logger.error("put result to blockingqueue error", e);
+                Thread.currentThread().interrupt();
                 throw new CRUDToolbarException(ErrorConstants.EXCEL_READ_ERROR, e);
             }
         } else {

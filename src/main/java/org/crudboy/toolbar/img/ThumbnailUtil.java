@@ -14,6 +14,8 @@ import java.io.IOException;
  */
 public class ThumbnailUtil {
 
+    private ThumbnailUtil(){}
+
     private static Logger logger = LoggerFactory.getLogger(ThumbnailUtil.class);
 
     /**

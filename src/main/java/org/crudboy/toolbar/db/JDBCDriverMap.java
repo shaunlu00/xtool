@@ -5,6 +5,8 @@ import com.google.common.base.Strings;
 
 public class JDBCDriverMap {
 
+    private JDBCDriverMap(){}
+
     public final static String DB_ORACLE = "ORACLE";
     public final static String DB_MYSQL = "MySQL";
     public final static String DB_POSTGRESQL = "PostgreSQL";
