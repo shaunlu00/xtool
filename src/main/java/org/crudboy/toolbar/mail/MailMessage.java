@@ -6,20 +6,28 @@ import java.util.Map;
 
 public class MailMessage {
 
+    // 发送者邮箱地址
     private String from;
 
+    // 接收者邮箱地址
     private List<String> to;
 
+    // cc邮箱地址
     private List<String> cc;
 
+    // bcc 邮箱地址
     private List<String> bcc;
 
+    // 邮件主题
     private String subject;
 
+    // 邮件正文
     private String text;
 
+    // 邮件内联图片, key为在邮件中的占位符
     private Map<String, File> inlineImgs;
 
+    // 附件
     private List<File> attachments;
 
     public String getText() {

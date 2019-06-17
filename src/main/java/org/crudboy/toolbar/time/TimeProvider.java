@@ -1,5 +1,6 @@
 package org.crudboy.toolbar.time;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -9,7 +10,7 @@ import java.util.TimeZone;
 /**
  * Time Helper class
  */
-public class TimeProvider {
+public class TimeProvider implements Serializable {
 
     private TimeZone timezone;
 
@@ -32,6 +33,11 @@ public class TimeProvider {
         SimpleDateFormat isoDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         isoDateFormat.setTimeZone(timezone);
         return isoDateFormat.parse(str);
+    }
+
+    public Date parseDate(String str, SimpleDateFormat simpleDateFormat) throws ParseException {
+        simpleDateFormat.setTimeZone(timezone);
+        return simpleDateFormat.parse(str);
     }
 
     /**

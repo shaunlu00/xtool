@@ -3,7 +3,7 @@ package org.crudboy.toolbar.json;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.crudboy.toolbar.toolbarerror.CRUDToolbarException;
+import org.crudboy.toolbar.exception.ToolbarRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +29,7 @@ public class JSONUtil {
             return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             logger.error("JSON Util Error - object to str", e);
-            throw new CRUDToolbarException("JSON Util Error - object to str", e);
+            throw new ToolbarRuntimeException("JSON Util Error - object to str", e);
         }
     }
 
@@ -38,7 +38,7 @@ public class JSONUtil {
             return (T) objectMapper.readValue(str, tClass);
         } catch (IOException e) {
             logger.error("JSON Util Error - str to object", e);
-            throw new CRUDToolbarException("JSON Util Error - str to object", e);
+            throw new ToolbarRuntimeException("JSON Util Error - str to object", e);
         }
     }
 
@@ -49,7 +49,16 @@ public class JSONUtil {
             return toObject(content, objType);
         } catch (IOException | ClassNotFoundException e) {
             logger.error("JSON Util Error - str to dynamic object", e);
-            throw new CRUDToolbarException("JSON Util Error - str to dynamic object", e);
+            throw new ToolbarRuntimeException("JSON Util Error - str to dynamic object", e);
+        }
+    }
+
+    public static JsonNode getJSONNode(String content) {
+        try {
+            return objectMapper.readTree(content);
+        } catch (IOException e) {
+            logger.error("JSON Util Error - get JSON node", e);
+            throw new ToolbarRuntimeException("JSON Util Error - get JSON node", e);
         }
     }
 
@@ -58,7 +67,7 @@ public class JSONUtil {
             return objectMapper.readValue(str, objectMapper.getTypeFactory().constructCollectionType(List.class, tClass));
         } catch (IOException e) {
             logger.error("JSON Util Error - str to array", e);
-            throw new CRUDToolbarException("JSON Util Error - str to array", e);
+            throw new ToolbarRuntimeException("JSON Util Error - str to array", e);
         }
     }
 

@@ -15,7 +15,10 @@ import java.io.InputStream;
  */
 public class FileUtil {
 
-    private FileUtil(){}
+    private FileUtil() {
+    }
+
+    ;
 
     /**
      * Write byte array into a file

@@ -13,7 +13,7 @@ import java.util.*;
 
 public class ClasspathUtil {
 
-    private ClasspathUtil(){}
+    private ClasspathUtil() { }
 
     private static final Logger logger = LoggerFactory.getLogger(ClasspathUtil.class);
 

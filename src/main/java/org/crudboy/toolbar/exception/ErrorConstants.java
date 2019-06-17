@@ -1,4 +1,4 @@
-package org.crudboy.toolbar.toolbarerror;
+package org.crudboy.toolbar.exception;
 
 public class ErrorConstants {
 

@@ -12,7 +12,8 @@ import java.nio.file.attribute.BasicFileAttributes;
  */
 public class DirectoryUtil {
 
-    private DirectoryUtil(){}
+    private DirectoryUtil() {
+    }
 
     /**
      * Create directory if it does not exist
@@ -79,7 +80,7 @@ public class DirectoryUtil {
         try {
             Files.deleteIfExists(directory);
         } catch (DirectoryNotEmptyException e) {
-            Files.walkFileTree(directory, new SimpleFileVisitor<Path>(){
+            Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     Files.delete(file);

@@ -12,4 +12,5 @@ public class ImageUtil {
     public static String getImgBase64(String imageFilePath) throws IOException {
         return encoder.encodeToString(FileUtil.getFileAsBytes(imageFilePath));
     }
+
 }
