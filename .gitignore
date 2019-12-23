@@ -25,4 +25,7 @@
 /.nb-gradle/
 
 *.log
+.gradle
+gradle
+gradlew*
 
